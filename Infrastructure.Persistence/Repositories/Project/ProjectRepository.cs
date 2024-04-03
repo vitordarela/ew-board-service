@@ -35,10 +35,18 @@ namespace Infrastructure.Persistence.Repositories
             return projectSaved.Entity;
         }
 
-        public async Task UpdateAsync(Project project)
+        public async Task<Project> UpdateAsync(Project project)
         {
-            _projects.Update(project);
-            dbContext.SaveChanges();
+            var existingProject = await _projects.FirstOrDefaultAsync(p => p.Id == project.Id & p.UserId == project.UserId);
+
+            if (existingProject != null)
+            {
+                existingProject.Name = project.Name;
+                existingProject.Description = project.Description;
+                dbContext.SaveChanges();
+            }
+
+            return existingProject;         
         }
 
         public async Task DeleteAsync(string userId, string id)

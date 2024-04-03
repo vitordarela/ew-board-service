@@ -10,7 +10,7 @@ namespace Application.Services.Interfaces
 
         Task<Project> AddAsync(Project project);
 
-        Task UpdateAsync(Project project);
+        Task<Project> UpdateAsync(Project project);
 
         Task DeleteAsync(string userId, string id);
     }

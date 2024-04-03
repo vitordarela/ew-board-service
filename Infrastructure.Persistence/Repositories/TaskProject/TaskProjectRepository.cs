@@ -18,11 +18,6 @@ namespace Infrastructure.Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<TaskProject>> GetAllAsync()
-        {
-            return await _tasksBoard.Where(t => true).ToListAsync();
-        }
-
         public async Task<TaskProject> GetByIdAsync(string id)
         {
             return await _tasksBoard.FirstOrDefaultAsync(t => t.Id == id);
@@ -43,7 +38,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<TaskProject> UpdateAsync(TaskProject task)
         {
-            var existingTask = await _tasksBoard.FirstOrDefaultAsync(t => t.Id == task.Id);
+            var existingTask = await _tasksBoard.FirstOrDefaultAsync(t => t.Id == task.Id & t.ProjectId == task.ProjectId);
 
             if (existingTask != null)
             {
@@ -63,11 +58,6 @@ namespace Infrastructure.Persistence.Repositories
             var taskSearch = await _tasksBoard.FirstOrDefaultAsync(p => p.Id == taskId & p.ProjectId == projectId);
             _tasksBoard.Remove(taskSearch);
             dbContext.SaveChanges();
-        }
-
-        public async Task<IEnumerable<TaskProject>> GetAllByUserIdAsync(string userId)
-        {
-            return await _tasksBoard.Where(t => t.UserId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<TaskProject>> GetNotCompletedAsync(string projectId)

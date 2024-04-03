@@ -7,41 +7,45 @@ namespace Application.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly IProjectRepository _projectRepository;
-        private readonly IMapper _mapper;
+        private readonly IProjectRepository projectRepository;
+        private readonly IMapper mapper;
 
         public ProjectService(IProjectRepository projectRepository, IMapper mapper)
         {
-            _projectRepository = projectRepository;
-            _mapper = mapper;
+            this.projectRepository = projectRepository;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<ProjectResponse>> GetAllProjectsAsync(string userId)
         {
-            var projects = await _projectRepository.GetAllAsync(userId);
-            return _mapper.Map<IEnumerable<ProjectResponse>>(projects);
+            var projects = await this.projectRepository.GetAllAsync(userId);
+            return this.mapper.Map<IEnumerable<ProjectResponse>>(projects);
         }
 
         public async Task<Project> GetProjectByIdAsync(string projectId)
         {
-            return await _projectRepository.GetByIdAsync(projectId);
+            return await this.projectRepository.GetByIdAsync(projectId);
         }
 
         public async Task<Project> AddProjectAsync(ProjectRequest projectRequest)
         {
-            var project = _mapper.Map<Project>(projectRequest);
-            return await _projectRepository.AddAsync(project);
+            var project = this.mapper.Map<Project>(projectRequest);
+            return await this.projectRepository.AddAsync(project);
         }
 
-        public Task UpdateProjectAsync(ProjectRequest projectRequest)
+        public async Task<ProjectResponse> UpdateProjectAsync(string projectId, ProjectRequest projectRequest)
         {
-            var project = _mapper.Map<Project>(projectRequest);
-            return _projectRepository.UpdateAsync(project);
+            var project = this.mapper.Map<Project>(projectRequest);
+            project.Id = projectId;
+
+            var projectUpdated = await this.projectRepository.UpdateAsync(project);
+
+            return this.mapper.Map<ProjectResponse>(projectUpdated);
         }
 
-        public Task DeleteProjectAsync(string userId,string projectId)
+        public async Task DeleteProjectAsync(string userId,string projectId)
         {
-            return _projectRepository.DeleteAsync(userId, projectId);
+            await this.projectRepository.DeleteAsync(userId, projectId);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Domain.Model
     public class TaskProject
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
-        public string? Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string UserId { get; set; }
 
@@ -20,6 +20,8 @@ namespace Domain.Model
         public TaskProjectPriority Priority { get; set; }
 
         public DateTime DueDate { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public TaskProjectStatus Status { get; set; }
     }

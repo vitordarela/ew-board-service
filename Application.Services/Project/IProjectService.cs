@@ -9,9 +9,9 @@ namespace Application.Services
 
         Task<Project> GetProjectByIdAsync(string projectId);
 
-        Task<Project> AddProjectAsync(ProjectRequest projectDTO);
+        Task<Project> AddProjectAsync(ProjectRequest projectRequest);
 
-        Task UpdateProjectAsync(ProjectRequest projectDTO);
+        Task<ProjectResponse> UpdateProjectAsync(string projectId, ProjectRequest projectRequest);
 
         Task DeleteProjectAsync(string userId, string projectId);
      }
