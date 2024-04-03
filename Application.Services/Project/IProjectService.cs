@@ -7,12 +7,12 @@ namespace Application.Services
     {
         Task<IEnumerable<ProjectResponse>> GetAllProjectsAsync(string userId);
 
-        Task<Project> GetProjectByIdAsync(string id);
+        Task<Project> GetProjectByIdAsync(string projectId);
 
         Task<Project> AddProjectAsync(ProjectRequest projectDTO);
 
         Task UpdateProjectAsync(ProjectRequest projectDTO);
 
-        Task DeleteProjectAsync(string id);
+        Task DeleteProjectAsync(string userId, string projectId);
      }
 }

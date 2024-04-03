@@ -1,7 +1,9 @@
 ﻿using Domain.Model;
+using Domain.Model.Enum;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -39,15 +41,26 @@ namespace Infrastructure.Persistence.Repositories
             return taskSaved.Entity;
         }
 
-        public async Task UpdateAsync(TaskProject task)
+        public async Task<TaskProject> UpdateAsync(TaskProject task)
         {
-            _tasksBoard.Update(task);
-            dbContext.SaveChanges();
+            var existingTask = await _tasksBoard.FirstOrDefaultAsync(t => t.Id == task.Id);
+
+            if (existingTask != null)
+            {
+                existingTask.Status = task.Status;
+                existingTask.DueDate = task.DueDate;
+                existingTask.Description = task.Description;
+                existingTask.Title = task.Title;
+                existingTask.UserId = task.UserId;
+                dbContext.SaveChanges();
+            }
+
+            return existingTask;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string projectId ,string taskId)
         {
-            var taskSearch = await _tasksBoard.FirstOrDefaultAsync(p => p.Id == id);
+            var taskSearch = await _tasksBoard.FirstOrDefaultAsync(p => p.Id == taskId & p.ProjectId == projectId);
             _tasksBoard.Remove(taskSearch);
             dbContext.SaveChanges();
         }
@@ -55,6 +68,11 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<TaskProject>> GetAllByUserIdAsync(string userId)
         {
             return await _tasksBoard.Where(t => t.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TaskProject>> GetNotCompletedAsync(string projectId)
+        {
+            return await _tasksBoard.Where(p => p.ProjectId == projectId & p.Status != TaskProjectStatus.Completed).ToListAsync();
         }
     }
 }

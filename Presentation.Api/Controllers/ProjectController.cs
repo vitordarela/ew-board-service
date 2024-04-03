@@ -9,10 +9,12 @@ namespace Presentation.Api.Controllers
     public class ProjectController : Controller
     {
         private readonly IProjectService projectService;
+        private readonly ITaskProjectService taskProjectService;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, ITaskProjectService taskProjectService)
         {
             this.projectService = projectService;
+            this.taskProjectService = taskProjectService;
         }
 
         [HttpGet]
@@ -32,17 +34,23 @@ namespace Presentation.Api.Controllers
 
         // Remoção de Projetos - remover um projeto
         [HttpDelete("{projectId}")]
-        public IActionResult DeleteProject([FromQuery] string userId, string projectId)
+        public async Task<IActionResult> DeleteProjectAsync([FromQuery] string userId, string projectId)
         {
-            //if (this.projectService.HasPendingTasks(projectId))
-            //{
-            //    return BadRequest("O projeto não pode ser removido porque há tarefas pendentes associadas a ele.");
-            //}
-            //else
-            //{
-                this.projectService.DeleteProjectAsync(projectId);
+            if (await this.HasPendingTasksAsync(projectId))
+            {
+                return BadRequest(new { errorMessage = "The project cannot be removed because there are pending tasks associated with it" });
+            }
+            else
+            {
+                await this.projectService.DeleteProjectAsync(userId, projectId);
                 return NoContent();
-            //}
+            }
+        }
+
+        private async Task<bool> HasPendingTasksAsync(string projectId)
+        {
+            var tasks = await this.taskProjectService.GetTaskNotCompletedAsync(projectId).ConfigureAwait(false);
+            return tasks.Count() > 0;
         }
     }
 }

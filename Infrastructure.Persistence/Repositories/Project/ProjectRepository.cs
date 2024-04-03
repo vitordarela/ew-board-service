@@ -41,11 +41,15 @@ namespace Infrastructure.Persistence.Repositories
             dbContext.SaveChanges();
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string userId, string id)
         {
-            var projectSearch = await _projects.FirstOrDefaultAsync(p => p.Id == id);
-            _projects.Remove(projectSearch);
-            dbContext.SaveChanges();
+            var projectSearch = await _projects.FirstOrDefaultAsync(p => p.Id == id & p.UserId == userId);
+
+            if(projectSearch != null)
+            {
+                _projects.Remove(projectSearch);
+                dbContext.SaveChanges();
+            }  
         }
     }
 }

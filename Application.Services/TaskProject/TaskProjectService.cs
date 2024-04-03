@@ -2,47 +2,66 @@
 using Domain.Model;
 using Domain.Model.DTO.Project;
 using Domain.Model.DTO.TaskBoard;
+using Domain.Model.Enum;
 using Infrastructure.Persistence.Repositories;
+using System.Threading.Tasks;
 
 namespace Application.Services
 {
     public class TaskProjectService : ITaskProjectService
     {
-        private readonly ITaskProjectRepository _taskBoardRepository;
-        private readonly IMapper _mapper;
+        private readonly ITaskProjectRepository taskBoardRepository;
+        private readonly IMapper mapper;
 
         public TaskProjectService(ITaskProjectRepository taskBoardRepository, IMapper mapper)
         {
-            _taskBoardRepository = taskBoardRepository;
-            _mapper = mapper;
+            this.taskBoardRepository = taskBoardRepository;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<TaskProject>> GetAllTaskBoardsByProjectIdAsync(string projectId)
         {
-            return await _taskBoardRepository.GetByProjectIdAsync(projectId);
+            return await taskBoardRepository.GetByProjectIdAsync(projectId);
         }
 
-        public Task<TaskProject> GetTaskBoardByIdAsync(string id)
+        public Task<TaskProject> GetTaskBoardByIdAsync(string projectId)
         {
-            return _taskBoardRepository.GetByIdAsync(id);
+            return taskBoardRepository.GetByIdAsync(projectId);
         }
 
         public async Task<TaskProject> AddTaskBoardAsync(string projectId, TaskProjectRequest taskProjectRequest)
         {
-            var taskProject = _mapper.Map<TaskProject>(taskProjectRequest);
+            var taskProject = mapper.Map<TaskProject>(taskProjectRequest);
             taskProject.ProjectId = projectId;
 
-            return await _taskBoardRepository.AddAsync(taskProject);
+            return await taskBoardRepository.AddAsync(taskProject);
         }
 
-        public Task UpdateTaskBoardAsync(TaskProject taskProject)
+        public async Task<TaskProject> UpdateTaskBoardAsync(string projectId, string taskId, TaskProjectUpdateRequest taskProjectUpdateRequest)
         {
-            return _taskBoardRepository.UpdateAsync(taskProject);
+            var taskProject = mapper.Map<TaskProject>(taskProjectUpdateRequest);
+            taskProject.ProjectId = projectId;
+            taskProject.Id = taskId;
+
+            return await taskBoardRepository.UpdateAsync(taskProject);
         }
 
-        public Task DeleteTaskBoardAsync(string id)
+        public Task DeleteTaskBoardAsync(string projectId, string taskId)
         {
-            return _taskBoardRepository.DeleteAsync(id);
+            return taskBoardRepository.DeleteAsync(projectId, taskId);
+        }
+
+        public async Task<bool> ReachedTaskLimit(string projectId)
+        {
+            var tasks = await taskBoardRepository.GetByProjectIdAsync(projectId);
+            int taskCount = tasks.Count();
+
+            return taskCount >= 20;
+        }
+
+        public async Task<IEnumerable<TaskProject>> GetTaskNotCompletedAsync(string projectId)
+        {
+            return await this.taskBoardRepository.GetNotCompletedAsync(projectId);
         }
     }
 }

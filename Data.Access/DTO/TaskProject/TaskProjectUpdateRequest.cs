@@ -1,16 +1,12 @@
-﻿using Domain.Model.Enum;
-
-namespace Domain.Model.DTO.TaskBoard
+﻿namespace Domain.Model.DTO.TaskBoard
 {
-    public class TaskProjectRequest
+    public class TaskProjectUpdateRequest
     {
         public string UserId { get; set; }
 
         public string Title { get; set; }
 
         public string Description { get; set; }
-
-        public TaskProjectPriority Priority { get; set; }
 
         public DateTime DueDate { get; set; }
 

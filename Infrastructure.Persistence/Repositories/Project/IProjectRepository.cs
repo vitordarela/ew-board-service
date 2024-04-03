@@ -12,6 +12,6 @@ namespace Application.Services.Interfaces
 
         Task UpdateAsync(Project project);
 
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string userId, string id);
     }
 }

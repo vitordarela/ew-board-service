@@ -26,24 +26,37 @@ namespace Presentation.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTaskForProjectAsync(string projectId, [FromBody] TaskProjectRequest taskProjectRequest)
         {
-            var createdTask = await this.taskProjectService.AddTaskBoardAsync(projectId, taskProjectRequest);
+            bool reachedLimit = await this.taskProjectService.ReachedTaskLimit(projectId).ConfigureAwait(false);
+            
+            if (reachedLimit)
+            {
+                return BadRequest(new { ErrorMessage = "You have reached the maximum limit of 20 tasks for this project." } );
+            }
+
+
+            var createdTask = await this.taskProjectService.AddTaskBoardAsync(projectId, taskProjectRequest).ConfigureAwait(false);
             return Ok(new { id = createdTask.Id });
         }
 
         // Atualização de Tarefas - atualizar o status ou detalhes de uma tarefa
         [HttpPut("{taskId}")]
-        public IActionResult UpdateTask(string projectId, string taskId, [FromBody] TaskProjectRequest taskProjectRequest)
+        public async Task<IActionResult> UpdateTaskAsync(string projectId, string taskId, [FromBody] TaskProjectUpdateRequest taskProjectUpdateRequest)
         {
-            // Implementação para atualizar uma tarefa
-            return Ok(taskProjectRequest);
+            var taskUpdated = await this.taskProjectService.UpdateTaskBoardAsync(projectId, taskId, taskProjectUpdateRequest);
+
+            if (taskUpdated == null)
+            {
+                return NotFound(new { ErrorMessage = "Task not Found" });
+            }
+
+            return Ok(taskUpdated);
         }
 
-        // Remoção de Tarefas - remover uma tarefa de um projeto
         [HttpDelete("{taskId}")]
-        public IActionResult DeleteTask(string projectId, string taskId)
+        public async Task<IActionResult> DeleteTask(string projectId, string taskId)
         {
-            // Implementação para remover uma tarefa
-            return Ok();
+            await this.taskProjectService.DeleteTaskBoardAsync(projectId, taskId).ConfigureAwait(false);
+            return NoContent();
         }
     }
 }

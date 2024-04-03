@@ -22,9 +22,9 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<ProjectResponse>>(projects);
         }
 
-        public async Task<Project> GetProjectByIdAsync(string id)
+        public async Task<Project> GetProjectByIdAsync(string projectId)
         {
-            return await _projectRepository.GetByIdAsync(id);
+            return await _projectRepository.GetByIdAsync(projectId);
         }
 
         public async Task<Project> AddProjectAsync(ProjectRequest projectRequest)
@@ -39,9 +39,9 @@ namespace Application.Services
             return _projectRepository.UpdateAsync(project);
         }
 
-        public Task DeleteProjectAsync(string id)
+        public Task DeleteProjectAsync(string userId,string projectId)
         {
-            return _projectRepository.DeleteAsync(id);
+            return _projectRepository.DeleteAsync(userId, projectId);
         }
     }
 }
