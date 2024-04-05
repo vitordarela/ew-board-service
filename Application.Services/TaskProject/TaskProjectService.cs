@@ -9,23 +9,28 @@ namespace Application.Services
 {
     public class TaskProjectService : ITaskProjectService
     {
-        private readonly ITaskProjectRepository taskBoardRepository;
+        private readonly ITaskProjectRepository taskProject;
         private readonly IMapper mapper;
 
-        public TaskProjectService(ITaskProjectRepository taskBoardRepository, IMapper mapper)
+        public TaskProjectService(ITaskProjectRepository taskProjectRepository, IMapper mapper)
         {
-            this.taskBoardRepository = taskBoardRepository;
+            this.taskProject = taskProjectRepository;
             this.mapper = mapper;
         }
 
         public async Task<IEnumerable<TaskProject>> GetAllTaskBoardsByProjectIdAsync(string projectId)
         {
-            return await taskBoardRepository.GetByProjectIdAsync(projectId);
+            return await this.taskProject.GetByProjectIdAsync(projectId);
+        }
+
+        public async Task<IEnumerable<TaskProjectHistory>> GetTaskHistoryByTaskIdAsync(string taskId)
+        {
+            return await this.taskProject.GetTaskHistoryByTaskIdAsync(taskId);
         }
 
         public Task<TaskProject> GetTaskBoardByIdAsync(string projectId)
         {
-            return taskBoardRepository.GetByIdAsync(projectId);
+            return this.taskProject.GetByIdAsync(projectId);
         }
 
         public async Task<TaskProject> AddTaskBoardAsync(string projectId, TaskProjectRequest taskProjectRequest)
@@ -33,7 +38,7 @@ namespace Application.Services
             var taskProject = mapper.Map<TaskProject>(taskProjectRequest);
             taskProject.ProjectId = projectId;
 
-            return await taskBoardRepository.AddAsync(taskProject);
+            return await this.taskProject.AddAsync(taskProject);
         }
 
         public async Task<TaskProject> UpdateTaskBoardAsync(string projectId, string taskId, TaskProjectUpdateRequest taskProjectUpdateRequest)
@@ -42,17 +47,17 @@ namespace Application.Services
             taskProject.ProjectId = projectId;
             taskProject.Id = taskId;
 
-            return await taskBoardRepository.UpdateAsync(taskProject);
+            return await this.taskProject.UpdateAsync(taskProject);
         }
 
         public Task DeleteTaskBoardAsync(string projectId, string taskId)
         {
-            return taskBoardRepository.DeleteAsync(projectId, taskId);
+            return this.taskProject.DeleteAsync(projectId, taskId);
         }
 
         public async Task<bool> ReachedTaskLimit(string projectId)
         {
-            var tasks = await taskBoardRepository.GetByProjectIdAsync(projectId);
+            var tasks = await this.taskProject.GetByProjectIdAsync(projectId);
             int taskCount = tasks.Count();
 
             return taskCount >= 20;
@@ -60,17 +65,17 @@ namespace Application.Services
 
         public async Task<IEnumerable<TaskProject>> GetTaskNotCompletedAsync(string projectId)
         {
-            return await this.taskBoardRepository.GetNotCompletedAsync(projectId);
+            return await this.taskProject.GetNotCompletedAsync(projectId);
         }
 
         public async Task<int> GetGeneralStatisticAsync(DateTime startDate, DateTime endDate, TaskProjectStatus? taskProjectStatus, TaskProjectPriority? taskProjectPriority)
         {
-            return await this.taskBoardRepository.GetGeneralStatisticAsync(startDate, endDate, taskProjectStatus, taskProjectPriority);
+            return await this.taskProject.GetGeneralStatisticAsync(startDate, endDate, taskProjectStatus, taskProjectPriority);
         }
 
         public async Task<AverageReportResult> GetAverageTasksByStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus)
         {
-            var tasks = await this.taskBoardRepository.GetTasksPerDateAndStatusAsync(startDate, endDate, taskProjectStatus);
+            var tasks = await this.taskProject.GetTasksPerDateAndStatusAsync(startDate, endDate, taskProjectStatus);
 
             var tasksPerUser = tasks
                 .GroupBy(t => t.UserId)

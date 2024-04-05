@@ -23,8 +23,5 @@ namespace Domain.Model
         public DateTime DueDate { get; set; }
 
         public TaskProjectStatus Status { get; set; }
-
-        [BsonIgnore]
-        public List<TaskProjectHistory> History { get; set; }
     }
 }

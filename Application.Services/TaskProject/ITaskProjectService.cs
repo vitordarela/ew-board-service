@@ -24,5 +24,7 @@ namespace Application.Services
         Task<int> GetGeneralStatisticAsync(DateTime startDate, DateTime endDate, TaskProjectStatus? taskProjectStatus, TaskProjectPriority? taskProjectPriority);
 
         Task<AverageReportResult> GetAverageTasksByStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus);
+
+        Task<IEnumerable<TaskProjectHistory>> GetTaskHistoryByTaskIdAsync(string taskId);
     }
 }

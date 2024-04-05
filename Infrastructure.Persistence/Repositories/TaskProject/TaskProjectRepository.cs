@@ -30,14 +30,14 @@ namespace Infrastructure.Persistence.Repositories
                 .Where(t => t.ProjectId == projectId)
                 .ToListAsync();
 
-            foreach (var taskProject in taskProjects)
-            {
-                taskProject.History = await _taskProjectHistory
-                    .Where(th => th.TaskId == taskProject.Id)
-                    .ToListAsync();
-            }
-
             return taskProjects;
+        }
+
+        public async Task<IEnumerable<TaskProjectHistory>> GetTaskHistoryByTaskIdAsync(string taskId)
+        {
+            return await _taskProjectHistory
+                     .Where(th => th.TaskId == taskId)
+                     .ToListAsync();
         }
 
         public async Task<TaskProject> AddAsync(TaskProject task)

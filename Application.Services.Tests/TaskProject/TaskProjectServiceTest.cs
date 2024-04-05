@@ -154,5 +154,23 @@ namespace Application.Services.Tests
             Assert.IsType<AverageReportResult>(result);
             Assert.Equal(1.5, result.AverageTasksPerUser);
         }
+
+        [Fact]
+        public async Task GetTaskHistoryByTaskIdAsync_ReturnsTaskHistory()
+        {
+            // Arrange
+            var taskId = "taskId";
+            var expectedTaskHistory = new List<TaskProjectHistory>();
+            var mockTaskProjectRepository = new Mock<ITaskProjectRepository>();
+            mockTaskProjectRepository.Setup(x => x.GetTaskHistoryByTaskIdAsync(taskId)).ReturnsAsync(expectedTaskHistory);
+
+
+            // Act
+            var result = await _taskProjectService.GetTaskHistoryByTaskIdAsync(taskId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedTaskHistory, result);
+        }
     }
 }

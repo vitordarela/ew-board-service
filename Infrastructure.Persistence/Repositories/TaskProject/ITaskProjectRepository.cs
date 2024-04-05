@@ -10,6 +10,8 @@ namespace Infrastructure.Persistence.Repositories
 
         Task<IEnumerable<TaskProject>> GetByProjectIdAsync(string projectId);
 
+        Task<IEnumerable<TaskProjectHistory>> GetTaskHistoryByTaskIdAsync(string taskId);
+
         Task<IEnumerable<TaskProject>> GetNotCompletedAsync(string projectId);
 
         Task<TaskProject> AddAsync(TaskProject task);

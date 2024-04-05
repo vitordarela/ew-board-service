@@ -22,7 +22,7 @@ namespace Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Project>().ToCollection("projects");
-            modelBuilder.Entity<TaskProject>().ToCollection("tasks").HasMany(tp => tp.History).WithOne().HasForeignKey(tp => tp.TaskId);
+            modelBuilder.Entity<TaskProject>().ToCollection("tasks");
             modelBuilder.Entity<Comment>().ToCollection("comments");
             modelBuilder.Entity<User>().ToCollection("users");
             modelBuilder.Entity<TaskProjectHistory>().ToCollection("task_history");

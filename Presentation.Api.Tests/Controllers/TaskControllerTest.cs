@@ -82,5 +82,24 @@ namespace Presentation.Api.Tests.Controllers
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
+
+        [Fact]
+        public async Task GetTaskHistoryAsync_ReturnsOkWithTaskHistory()
+        {
+            // Arrange
+            var taskId = "taskId";
+            var expectedTasks = new List<TaskProjectHistory>();
+            var mockTaskProjectService = new Mock<ITaskProjectService>();
+            mockTaskProjectService.Setup(x => x.GetTaskHistoryByTaskIdAsync(taskId)).ReturnsAsync(expectedTasks);
+
+
+            // Act
+            var result = await _controller.GetTaskHistoryAsync(taskId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var actualTasks = Assert.IsAssignableFrom<IEnumerable<TaskProjectHistory>>(okResult.Value);
+            Assert.Equal(expectedTasks, actualTasks);
+        }
     }
 }

@@ -24,6 +24,13 @@ namespace Presentation.Api.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("{taskId}/history")]
+        public async Task<IActionResult> GetTaskHistoryAsync(string taskId)
+        {
+            var tasks = await this.taskProjectService.GetTaskHistoryByTaskIdAsync(taskId);
+            return Ok(tasks);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateTaskForProjectAsync(string projectId, [FromBody] TaskProjectRequest taskProjectRequest)
         {
