@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Domain.Model.Common;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Model
 {
-    public class Project
+    public class Project : BaseModelEntity
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         public string Id { get; set; } = Guid.NewGuid().ToString();

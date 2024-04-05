@@ -1,7 +1,7 @@
 ﻿using Domain.Model;
+using Domain.Model.DTO.Report;
 using Domain.Model.DTO.TaskBoard;
 using Domain.Model.Enum;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -20,5 +20,9 @@ namespace Application.Services
         Task<bool> ReachedTaskLimit(string projectId);
 
         Task<IEnumerable<TaskProject>> GetTaskNotCompletedAsync(string projectId);
+
+        Task<int> GetGeneralStatisticAsync(DateTime startDate, DateTime endDate, TaskProjectStatus? taskProjectStatus, TaskProjectPriority? taskProjectPriority);
+
+        Task<AverageReportResult> GetAverageTasksByStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus);
     }
 }

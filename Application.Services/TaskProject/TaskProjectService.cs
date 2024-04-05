@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Model;
 using Domain.Model.DTO.Project;
+using Domain.Model.DTO.Report;
 using Domain.Model.DTO.TaskBoard;
 using Domain.Model.Enum;
 using Infrastructure.Persistence.Repositories;
@@ -62,6 +63,29 @@ namespace Application.Services
         public async Task<IEnumerable<TaskProject>> GetTaskNotCompletedAsync(string projectId)
         {
             return await this.taskBoardRepository.GetNotCompletedAsync(projectId);
+        }
+
+        public async Task<int> GetGeneralStatisticAsync(DateTime startDate, DateTime endDate, TaskProjectStatus? taskProjectStatus, TaskProjectPriority? taskProjectPriority)
+        {
+            return await this.taskBoardRepository.GetGeneralStatisticAsync(startDate, endDate, taskProjectStatus, taskProjectPriority);
+        }
+
+        public async Task<AverageReportResult> GetAverageTasksByStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus)
+        {
+            var tasks = await this.taskBoardRepository.GetTasksPerDateAndStatusAsync(startDate, endDate, taskProjectStatus);
+            
+            var tasksPerUser = tasks
+                .GroupBy(t => t.UserId)
+                .Select(g => new
+                {
+                    UserId = g.Key,
+                    TotalTasks = g.Count()
+                })
+                .ToList();
+
+            double averageTasks = tasksPerUser.Any() ? tasksPerUser.Average(t => t.TotalTasks) : 0;
+
+            return new AverageReportResult { AverageTasksPerUser = Math.Round(averageTasks, 2) };
         }
     }
 }

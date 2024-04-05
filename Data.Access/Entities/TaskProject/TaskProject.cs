@@ -1,10 +1,11 @@
-﻿using Domain.Model.Enum;
+﻿using Domain.Model.Common;
+using Domain.Model.Enum;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Model
 {
-    public class TaskProject
+    public class TaskProject : BaseModelEntity
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -21,8 +22,9 @@ namespace Domain.Model
 
         public DateTime DueDate { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
         public TaskProjectStatus Status { get; set; }
+
+        [BsonIgnore]
+        public List<TaskProjectHistory> History { get; set; }
     }
 }

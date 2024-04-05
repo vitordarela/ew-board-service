@@ -1,10 +1,11 @@
-﻿using Domain.Model.Enum;
+﻿using Domain.Model.Common;
+using Domain.Model.Enum;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Model
 {
-    public class User
+    public class User : BaseModelEntity
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -14,7 +15,5 @@ namespace Domain.Model
         public string Email { get; set; }
 
         public Role Role { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

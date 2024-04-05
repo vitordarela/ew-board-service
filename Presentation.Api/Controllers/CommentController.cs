@@ -12,11 +12,13 @@ namespace Presentation.Api.Controllers
     {
         private readonly ICommentService commentService;
         private readonly ITaskProjectService taskProjectService;
+        private readonly IUserService userService;
 
-        public CommentController(ICommentService commentService, ITaskProjectService taskProjectService)
+        public CommentController(ICommentService commentService, ITaskProjectService taskProjectService, IUserService userService)
         {
             this.commentService = commentService;
             this.taskProjectService = taskProjectService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -29,11 +31,12 @@ namespace Presentation.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCommentAsync([FromBody] CommentRequest commentRequest, string taskId)
         {
+            var checkIfUserExist = await this.UserExistAsync(commentRequest.UserId);
             var checkIfTaskExist = await this.CheckIfTaskExist(taskId).ConfigureAwait(false);
 
-            if (!checkIfTaskExist)
+            if (!checkIfTaskExist || !checkIfUserExist)
             {
-                return BadRequest(new { ErrorMessage = "The task does not exist" });
+                return BadRequest(new { ErrorMessage = "The task or user does not exist" });
             }
 
             var createdComment = await this.commentService.AddCommentAsync(taskId, commentRequest).ConfigureAwait(false);
@@ -64,6 +67,12 @@ namespace Presentation.Api.Controllers
         {
             var task = await this.taskProjectService.GetTaskBoardByIdAsync(taskId).ConfigureAwait(false);
             return task != null;
+        }
+
+        private async Task<bool> UserExistAsync(string userId)
+        {
+            var user = await this.userService.GetUserByIdAsync(userId).ConfigureAwait(false);
+            return user != null;
         }
     }
 }

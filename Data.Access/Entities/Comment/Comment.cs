@@ -1,16 +1,17 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Domain.Model.Common;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Model
 {
-    public class Comment
+    public class Comment : BaseModelEntity
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Description { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        //public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string TaskId { get; set; }
 

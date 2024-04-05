@@ -9,5 +9,7 @@
         public DateTime DueDate { get; set; }
 
         public TaskStatus Status { get; set; }
+
+        public string UserId { get; set; }
     }
 }
