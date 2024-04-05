@@ -100,7 +100,7 @@ Para obter a lista completa de endpoints e parâmetros, consulte a documentação d
 
 - Middleware para padronização dos Erros.
 - Users: deveria ser implementado via OAuth, para nao ter via parameters que enviar o userId sempre.
-- Adicionar mais testes unitarios especificos para cobrir mais regras de negocio.
-- Estou usando Entity Framework para MongoDB e desta forma estou utilizando a sobrescrita do metodo SaveChanges para detectar as alterações, porem como tem limitações para o MongoDB não consigo criar o historico da forma que eu havia visualizado (estilo Jira), e para fazer manualmente eu precisaria de mais tempo para criar a comparação e detecção dos campos alterados.
+- Adicionar mais testes unitarios especificos para cobrir mais regras de negócios.
+- Estou usando Entity Framework para MongoDB e desta forma estou utilizando a sobrescrita do metodo SaveChanges para detectar as alterações, porem como tem limitações para o MongoDB não consigo criar o histórico da forma que eu havia visualizado (estilo Jira), e para fazer manualmente eu precisaria de mais tempo para criar a comparação e detecção dos campos alterados.
 - Em termos de escalabilidade era ideal ja deixar a aplicação preparada para Kubernetes
 - Este ponto é apenas uma nota: Se eu fosse começar este projeto novamente, usaria o padrão CQS (Command Query Separation) que me daria muito mais agilidade e padronização dos endpoints.
