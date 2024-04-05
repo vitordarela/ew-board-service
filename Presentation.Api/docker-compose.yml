@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "32768:27017"
+
+  board-api:
+    build: 
+      context: "C:\\Users\\vitor\\source\\repos\\ew-board-service"
+      dockerfile: "C:\\Users\\vitor\\source\\repos\\ew-board-service\\Presentation.Api\\Dockerfile"
+    container_name: board-api
+    ports:
+      - "8080:8080"
+    environment:
+      - MongoDB__ConnectionString=mongodb://mongodb:27017
+    depends_on:
+      - mongodb
