@@ -2,8 +2,6 @@
 using AutoMapper;
 using Domain.Model;
 using Domain.Model.DTO.Comment;
-using Domain.Model.DTO.Project;
-using System.Xml.Linq;
 
 namespace Application.Services
 {

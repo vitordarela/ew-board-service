@@ -35,10 +35,10 @@ namespace Presentation.Api.Controllers
             }
 
             bool reachedLimit = await this.taskProjectService.ReachedTaskLimit(projectId).ConfigureAwait(false);
-            
+
             if (reachedLimit)
             {
-                return BadRequest(new { ErrorMessage = "You have reached the maximum limit of 20 tasks for this project." } );
+                return BadRequest(new { ErrorMessage = "You have reached the maximum limit of 20 tasks for this project." });
             }
 
             var createdTask = await this.taskProjectService.AddTaskBoardAsync(projectId, taskProjectRequest).ConfigureAwait(false);

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MongoDB.EntityFrameworkCore.Extensions;
-using Domain.Model;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Newtonsoft.Json;
+﻿using Domain.Model;
 using Domain.Model.Common;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MongoDB.EntityFrameworkCore.Extensions;
+using Newtonsoft.Json;
 
 namespace Infrastructure.Persistence
 {
@@ -15,7 +15,7 @@ namespace Infrastructure.Persistence
         public DbSet<User> User { get; init; }
         public DbSet<TaskProjectHistory> TaskProjectHistory { get; init; }
 
-        public MongoDbContext(DbContextOptions options): base(options)
+        public MongoDbContext(DbContextOptions options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace Infrastructure.Persistence
                         TaskId = taskProject.Id,
                     };
 
-                    var mongoDbContext = (MongoDbContext)this;
+                    var mongoDbContext = this;
                     mongoDbContext.TaskProjectHistory.AddAsync(taskHistory);
                 }
 
@@ -88,11 +88,11 @@ namespace Infrastructure.Persistence
                         TaskId = comment.TaskId,
                     };
 
-                    var mongoDbContext = (MongoDbContext)this;
+                    var mongoDbContext = this;
                     mongoDbContext.TaskProjectHistory.AddAsync(taskHistory);
                 }
 
-            }   
+            }
         }
     }
 }

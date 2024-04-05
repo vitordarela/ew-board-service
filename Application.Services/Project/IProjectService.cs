@@ -14,5 +14,5 @@ namespace Application.Services
         Task<ProjectResponse> UpdateProjectAsync(string projectId, ProjectRequest projectRequest);
 
         Task DeleteProjectAsync(string userId, string projectId);
-     }
+    }
 }

@@ -43,7 +43,7 @@ namespace Application.Services
             return this.mapper.Map<ProjectResponse>(projectUpdated);
         }
 
-        public async Task DeleteProjectAsync(string userId,string projectId)
+        public async Task DeleteProjectAsync(string userId, string projectId)
         {
             await this.projectRepository.DeleteAsync(userId, projectId);
         }

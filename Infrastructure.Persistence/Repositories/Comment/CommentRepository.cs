@@ -31,7 +31,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<Comment> UpdateAsync(Comment comment)
         {
-            var existingComment = await _comment.FirstOrDefaultAsync(t => t.Id == comment.Id & t.TaskId == comment.TaskId & t.UserId == comment.UserId );
+            var existingComment = await _comment.FirstOrDefaultAsync(t => t.Id == comment.Id & t.TaskId == comment.TaskId & t.UserId == comment.UserId);
 
             if (existingComment != null)
             {
@@ -47,11 +47,11 @@ namespace Infrastructure.Persistence.Repositories
         {
             var commentSearch = await _comment.FirstOrDefaultAsync(p => p.Id == commentId & p.UserId == userId & p.TaskId == taskId);
 
-            if(commentSearch != null)
+            if (commentSearch != null)
             {
                 _comment.Remove(commentSearch);
                 dbContext.SaveChanges();
-            }  
+            }
         }
     }
 }

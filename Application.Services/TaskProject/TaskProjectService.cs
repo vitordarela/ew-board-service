@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Model;
-using Domain.Model.DTO.Project;
 using Domain.Model.DTO.Report;
 using Domain.Model.DTO.TaskBoard;
 using Domain.Model.Enum;
 using Infrastructure.Persistence.Repositories;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -73,7 +71,7 @@ namespace Application.Services
         public async Task<AverageReportResult> GetAverageTasksByStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus)
         {
             var tasks = await this.taskBoardRepository.GetTasksPerDateAndStatusAsync(startDate, endDate, taskProjectStatus);
-            
+
             var tasksPerUser = tasks
                 .GroupBy(t => t.UserId)
                 .Select(g => new

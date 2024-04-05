@@ -1,7 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Repositories
@@ -46,18 +45,18 @@ namespace Infrastructure.Persistence.Repositories
                 dbContext.SaveChanges();
             }
 
-            return existingProject;         
+            return existingProject;
         }
 
         public async Task DeleteAsync(string userId, string id)
         {
             var projectSearch = await _projects.FirstOrDefaultAsync(p => p.Id == id & p.UserId == userId);
 
-            if(projectSearch != null)
+            if (projectSearch != null)
             {
                 _projects.Remove(projectSearch);
                 dbContext.SaveChanges();
-            }  
+            }
         }
     }
 }

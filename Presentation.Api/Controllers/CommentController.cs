@@ -1,7 +1,5 @@
 ﻿using Application.Services;
 using Domain.Model.DTO.Comment;
-using Domain.Model.DTO.Project;
-using Domain.Model.DTO.TaskBoard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Api.Controllers
@@ -46,7 +44,7 @@ namespace Presentation.Api.Controllers
         [HttpDelete("{commentId}")]
         public async Task<IActionResult> DeleteCommentAsync([FromQuery] string userId, string commentId, string taskId)
         {
-            await this.commentService.DeleteCommentAsync(userId, commentId,taskId);
+            await this.commentService.DeleteCommentAsync(userId, commentId, taskId);
             return NoContent();
         }
 

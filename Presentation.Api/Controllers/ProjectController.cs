@@ -1,6 +1,5 @@
 ﻿using Application.Services;
 using Domain.Model.DTO.Project;
-using Domain.Model.DTO.TaskBoard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Api.Controllers

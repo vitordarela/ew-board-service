@@ -65,7 +65,7 @@ namespace Infrastructure.Persistence.Repositories
             return existingTask;
         }
 
-        public async Task DeleteAsync(string projectId ,string taskId)
+        public async Task DeleteAsync(string projectId, string taskId)
         {
             var taskSearch = await _tasksProject.FirstOrDefaultAsync(p => p.Id == taskId & p.ProjectId == projectId);
             _tasksProject.Remove(taskSearch);

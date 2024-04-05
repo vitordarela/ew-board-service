@@ -28,7 +28,7 @@ namespace Presentation.Api.Controllers
         {
             var isManager = await this.CheckRoleIsManager(userId);
 
-            if(!isManager)
+            if (!isManager)
             {
                 return StatusCode(403);
             }
@@ -47,7 +47,7 @@ namespace Presentation.Api.Controllers
         {
             var isManager = await this.CheckRoleIsManager(userId);
 
-            if(!isManager)
+            if (!isManager)
             {
                 return StatusCode(403);
             }

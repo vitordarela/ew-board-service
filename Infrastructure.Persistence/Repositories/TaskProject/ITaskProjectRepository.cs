@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence.Repositories
         Task DeleteAsync(string projectId, string taskId);
 
         Task<int> GetGeneralStatisticAsync(DateTime startDate, DateTime endDate, TaskProjectStatus? taskProjectStatus, TaskProjectPriority? taskProjectPriority);
-        
+
         Task<IEnumerable<TaskProject>> GetTasksPerDateAndStatusAsync(DateTime startDate, DateTime endDate, TaskProjectStatus taskProjectStatus);
     }
 }
